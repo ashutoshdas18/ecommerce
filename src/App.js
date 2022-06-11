@@ -1,25 +1,22 @@
-import logo from './logo.svg';
-import './App.css';
-
+import TopNav from "./components/nav/topNav";
+import MidNav from "./components/nav/midNav";
+import { useState } from "react";
+import BottomNav from "./components/nav/bottomNav";
+import Routers from "./route/routes";
+// import HomeBanner from "./components/banner/homebanner";
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    let [isAlive,setAlive] = useState(false);
+    let [isDarkAlive,setDarkAlive] = useState(false);
+    let [language,setLanguage] = useState('ENG')
+    let [darkMode,setDarkMode] = useState(false)
+    return(
+        <>
+        <TopNav isAlive={isAlive} setAlive={setAlive} isDarkAlive={isDarkAlive} setDarkAlive={setDarkAlive} language={language} setLanguage={setLanguage} darkMode={darkMode} setDarkMode={setDarkMode}/>
+        <MidNav darkMode={darkMode} language={language}/>
+        <BottomNav/>
+        <Routers/>
+        </>
+    )
 }
 
 export default App;
