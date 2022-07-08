@@ -18,6 +18,7 @@ let WeeklyDealsContainer= styledComponents.div `
         grid-template-columns:auto auto auto;
         &>div{
             height:340px;
+            // border-collapse:collapse;
         }
         &>div:first-child{
             border-radius:5px 0 0 0;
@@ -102,11 +103,37 @@ let HighLightDeal = styledComponents.div`
         }
     }
 
-    .highLightDealFooter{
-        height:100%;
+
+`
+
+const HighLightDealFooter = styledComponents.div`
+    height:100%;
+    padding-left:15px;
+    margin-top:30px;
+    .highlightProductName{
+        font-size:18px;
+        font-weight:500;
     }
-
-
+    .highlightBrandName{
+        font-size:14px;
+        color:#9e9ea5;
+    }
+    .highLightAvailability{
+        font-size:14px;
+        letter-space:0.75px;
+        color:${props=>props.available==='A'?'#00b853':props.available==='N'?'#d51243':''};
+        margin-top:10px;
+        font-family:var(--font-secondary);
+        font-weight:500;
+    }
+    &>div{
+        display:flex;
+        margin-top:10px;
+    }
+    &>div>p:first-child{
+        color :#a8a8b5;
+        margin-right:10px;
+    }
 `
 
 export default function WeeklyDeals(){
@@ -139,8 +166,15 @@ export default function WeeklyDeals(){
                     <img src={weeklyData?weeklyData[0].photo:''} alt="no-img"/>
 
                 </div>
-                <div className="highLightDealFooter">
-                </div>
+                <HighLightDealFooter available={weeklyData ? weeklyData[0].currStock>0 ?'A':'N':null }>
+                    <p className="highlightProductName">{weeklyData?weeklyData[0].name:''}</p>
+                    <p className="highlightBrandName">{weeklyData?weeklyData[0].brand:''}</p>
+                    <p className="highLightAvailability">{weeklyData ? weeklyData[0].currStock>0?'AVAILABLE':'NOT AVAILABLE':''}</p>
+                    <div className="highlightPriceDifferncee">
+                        <p className="highLightOldPrice"><s>&#8377;{weeklyData?weeklyData[0].releasePrice:''}</s></p>
+                        <p className="highLightNewPrice">&#8377;{weeklyData?weeklyData[0].currPrice:''}</p>
+                    </div>
+                </HighLightDealFooter>
             </HighLightDeal>
             <div className="regularDeals">
                 <ProductComponent data ={weeklyData?weeklyData[1]:null}></ProductComponent>

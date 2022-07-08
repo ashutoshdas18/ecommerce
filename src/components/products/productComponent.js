@@ -1,6 +1,5 @@
 import React from "react";
 import styledComponents,{keyframes} from "styled-components";
-// import styledComponents from "styled-components";
 
 let play = keyframes`
     from{
@@ -15,9 +14,10 @@ let RegularDeals = styledComponents.div`
     text-align:center;
     padding:20px 10px 10px 10px;
     position:relative;
-
+    transition:200ms ease-in-out;
+    
     //Pill shaped element for displaying percentage ;
-    &:before{
+    &>div:before{
         content:'${props=>props.discount?props.discount+'%':''}';
         position:absolute;
         left:20px;
@@ -30,7 +30,14 @@ let RegularDeals = styledComponents.div`
         line-height:22px;
         border-radius:5px;
     }
-
+    &>div{
+        transition:30ms linear;
+        transform:scale(${props=>props.scaling ? '1.01':'1'});
+        height:100%;
+        width:100%;
+        position:relative;
+        cursor:pointer;
+    }
     .img{
         height:200px;
         width:200px;
@@ -54,7 +61,7 @@ let RegularDeals = styledComponents.div`
           );
         position:absolute;
         left:0;
-        // animation:${play} 300ms linear infinite;  // Stopped Animation
+        // animation:${play} 400ms linear infinite;  // Stopped Animation
         display:${prop=>prop.available?'none':'block'};
         z-index:2;
     }
@@ -64,6 +71,7 @@ let RegularDeals = styledComponents.div`
         margin-top:20px;
         font-weight:500;
         padding-left:15px;
+        position:relative;
     }
     .productBrand{
         text-align:left;
@@ -96,8 +104,8 @@ let RegularDeals = styledComponents.div`
 export default function ProductComponent(props){
     let discount;
     let discountElement;
-
-    function test(){
+    let [isScaled,setScaled] = React.useState(false); 
+    function getDiscountDiv(){
         let releasePrice = parseInt(props.data.releasePrice);
         let currPrice =parseInt(props.data.currPrice);
         discount = Math.ceil(((releasePrice-currPrice)/releasePrice)*100);
@@ -107,33 +115,37 @@ export default function ProductComponent(props){
                             </>
         
         let nonDiscountedElement = <div className="newPrice">&#8377;{props.data.currPrice}</div>;
-        return discountElement= discount>0?discountedDiv:nonDiscountedElement;
+        return  discount>0?discountedDiv:nonDiscountedElement;
     }
-    let productDiv;
-    if(props.data){
-        discountElement = test();
-        productDiv = <><img src={props.data?props.data.photo:''} alt='' className="img"/>
-        <p className="productName">{props.data?props.data.name:''}</p>
-        <p className="productBrand">{props.data?props.data.brand:''}</p>
-        <p className="productStock">{props.data?props.data.currStock>0?'IN STOCK':'NOT AVAILABLE':''}</p>
-        <div className="productPrice">
-        {discountElement}
-        </div></>
-        
+    discountElement = props.data ? getDiscountDiv():<div></div>;
+    let productDiv = <div><img src={props.data?props.data.photo:''} alt='' className="img"/>
+                    <p className="productName">{props.data?props.data.name:''}</p>
+                    <p className="productBrand">{props.data?props.data.brand:''}</p>
+                    <p className="productStock">{props.data?props.data.currStock>0?'IN STOCK':'NOT AVAILABLE':''}</p>
+                    <div className="productPrice">
+                    {discountElement}
+                    </div></div>
+
+    let noProductDiv = <div>
+                    <div className="img" style={{backgroundColor:'#e3e3e3',margin:'0 auto'}}></div>
+                    <p className="productName" style={{backgroundColor:'#e3e3e3',height:'30px'}}></p>
+                    <p className="productBrand" style={{backgroundColor:'#e3e3e3',height:'30px'}}></p>
+                    <p className="productStock" style={{backgroundColor:'#e3e3e3',height:'30px'}}></p>
+                    </div>
+
+    productDiv = props.data ? productDiv : noProductDiv;
+
+    //scaling-up of individual product div
+
+    function scaleProduct(){
+        isScaled ? setScaled(false):setScaled(true);
     }
-    else{
-
-        productDiv = <>
-            <div className="img" style={{backgroundColor:'#e3e3e3',margin:'0 auto'}}></div>
-            <p className="productName" style={{backgroundColor:'#e3e3e3',height:'30px'}}></p>
-            <p className="productBrand" style={{backgroundColor:'#e3e3e3',height:'30px'}}></p>
-            <p className="productStock" style={{backgroundColor:'#e3e3e3',height:'30px'}}></p>
-        </>
-
+    function productClickHandler(arg){
+        window.location.href = `/products?name=${arg}`
     }
     return(
         
-        <RegularDeals discount={discount?discount:null} available={props.data?props.data.currStock>0?'A':'NA':null}>
+        <RegularDeals onClick={productClickHandler.bind(this,props.data?props.data.name:null)} onMouseEnter={scaleProduct} onMouseLeave={scaleProduct} scaling={isScaled} discount={discount?discount:null} available={props.data?props.data.currStock>0?'A':'NA':null}>
             {productDiv}
         </RegularDeals>
     )

@@ -1,7 +1,9 @@
 import React from "react";
 import styledComponents from "styled-components";
-import logo from '../../img/Layer 2.png'
+import { Navigate } from "react-router-dom";
+import logo from '../../img/Layer 2.png';
 import axios from "axios";
+
 
 const MidNavContainer = styledComponents.div`
     width:100%;
@@ -111,16 +113,17 @@ const TopNavUserHalf = styledComponents.div`
     display:flex;
     justify-content:space-between;
     
-    div{
+    &>div{
         height:40px;
         width:40px;
         background-size:cover;
     }
     .MidNavAccount{
-        background-image:url('https://img.icons8.com/color-glass/48/000000/guest-male.png')
+        background-image:url('https://img.icons8.com/color-glass/48/000000/guest-male.png');
     }
     .MidNavCart{
-        background-image:url('https://img.icons8.com/pastel-glyph/64/000000/shopping-trolley--v2.png')
+        background-image:url('https://img.icons8.com/pastel-glyph/64/000000/shopping-trolley--v2.png');
+        position:relative;
     }
     
 `
@@ -153,6 +156,12 @@ export default function MidNav(props){
    function revealSelectField(){
        setSelectDropDown(selectDropDown?false:true)
    }
+   function goToHomePage(){
+    window.location.href="/"
+   }
+   async function goCart(){
+    window.location.href="/cart"
+   }
    let languageObject ={};
    if(props.language==="ENG"){
        languageObject={
@@ -176,7 +185,7 @@ export default function MidNav(props){
            <MidNavWrapper>
                 <MidNavLogo>
 
-                    <div className="MidNavLogoDiv">
+                    <div className="MidNavLogoDiv" onClick={goToHomePage}>
                         <img src={logo} alt=""/>
                     </div>
                     <MidNavSelectDiv onClick={revealSelectField}>
@@ -201,7 +210,7 @@ export default function MidNav(props){
                 <TopNavUserHalf>
                     <div className="MidNavAccount"></div>
                     <div className="MidNavPrice"></div>
-                    <div className="MidNavCart"></div>
+                    <div className="MidNavCart" onClick={goCart}></div>
                 </TopNavUserHalf>
                 </TopNavRightHalf>
            </MidNavWrapper>

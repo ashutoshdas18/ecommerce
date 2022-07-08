@@ -249,7 +249,7 @@ export default function BottomNav(){
     function collectionClickHandler(args){
         let parentUrl = args.split('-')[0];
         let childUrl = args.split('-')[1];
-        window.location.href = `/${parentUrl}/${childUrl}`;
+        window.location.href = `/category/item?type=${childUrl}&q=${parentUrl}`;
     }
 
     let mensCollection = ["Jeans","Shirts","Vests", "Tshirts","Perfumes", "Hats","Footwear","Accessories"]
