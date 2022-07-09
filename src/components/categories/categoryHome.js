@@ -10,14 +10,14 @@ let CategoryWrapper = styled.div`
 `
 export default function Category(){
     let [category,setCategory] = React.useState(null);
-    let [prodSignal,setSignal] = React.useState([]);
+    let [prodSignal,setSignal] = React.useState({});
     React.useEffect(()=>{
         async function getFilter(url){
             let data = await axios.get(`http://localhost:5000/filters/type${url}`)
             setCategory(data.data);
         }
-        if(prodSignal.length>0){
-            console.log("Hello")
+        if(Object.keys(prodSignal).length>0){
+            console.log(prodSignal)
         }
         else
         getFilter(window.location.search);

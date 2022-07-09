@@ -65,20 +65,16 @@ export default function Filter({ filterData, setSignal, productSignal }) {
             setBrandFilter(filteredBrand)
         }
     }
-    function filterProducts(filteredData) {
-        if (productSignal.includes(filteredData)) {
-            let newArr = [];
-            productSignal.forEach(e => {
-                if (e !== filteredData) {
-                    newArr.push(e);
-                }
-            })
-            setSignal(newArr)
+    function filterProducts(filterDataType,filteredData) {
+        console.log(productSignal)
+        if(productSignal[filterDataType]){
+            console.log("Hi")
         }
-        else {
-            let newArr = productSignal.map(e => e);
-            newArr.push(filteredData);
-            setSignal(newArr)
+        else{
+            let x =productSignal;
+            x[filterDataType]=filterData;
+            setSignal(x)
+            console.log("Hello")
         }
     }
     return (
@@ -92,7 +88,7 @@ export default function Filter({ filterData, setSignal, productSignal }) {
                     <input type="text" placeholder="Search for brands" onChange={showFilters} className="brandInput" />
                     {brandFilter && <>
                         {brandFilter.map((e, key) => <div key={key} className="brands">
-                            <input type="checkbox" onClick={event => filterProducts(e)} value={e} />
+                            <input type="checkbox" onClick={event => filterProducts('brand',e)} value={e} />
                             <p>{e.toUpperCase()}</p>
                         </div>)
                         }
