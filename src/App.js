@@ -8,13 +8,16 @@ function App() {
     let [isAlive,setAlive] = useState(false);
     let [isDarkAlive,setDarkAlive] = useState(false);
     let [language,setLanguage] = useState('ENG')
-    let [darkMode,setDarkMode] = useState(false)
+    let [darkMode,setDarkMode] = useState(false);
+    let [isSeller,setSeller] = useState(false);
     return(
         <>
+        {!isSeller && <>
         <TopNav isAlive={isAlive} setAlive={setAlive} isDarkAlive={isDarkAlive} setDarkAlive={setDarkAlive} language={language} setLanguage={setLanguage} darkMode={darkMode} setDarkMode={setDarkMode}/>
         <MidNav darkMode={darkMode} language={language}/>
         <BottomNav/>
-        <Routers/>
+        </>}
+        <Routers setSeller={setSeller}/>
         </>
     )
 }

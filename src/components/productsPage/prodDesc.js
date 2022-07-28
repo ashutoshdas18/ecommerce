@@ -152,7 +152,6 @@ export default function ProdDesc({product}){
             }
         }
     },[product])
-
     function changeQuantity(arg){
         if(product)
         setDescQuantity(descQuantity+arg)
@@ -161,8 +160,9 @@ export default function ProdDesc({product}){
         if(product.currStock>=descQuantity && product.currStock>0 && descQuantity>0){
             let res = await axios.post('http://localhost:5000/updateCart',{
                 data:{
-                    name:product.name,
-                    quantity : descQuantity
+                    id:product._id,
+                    quantity : descQuantity,
+                    sessionData:window.localStorage.getItem('session')
                 }
             })
             console.log(res.data);

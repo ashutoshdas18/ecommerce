@@ -141,11 +141,11 @@ export default function ProductComponent(props){
         isScaled ? setScaled(false):setScaled(true);
     }
     function productClickHandler(arg){
-        window.location.href = `/products?name=${arg}`
+        window.location.href = `/products?id=${arg}`
     }
     return(
         
-        <RegularDeals onClick={productClickHandler.bind(this,props.data?props.data.name:null)} onMouseEnter={scaleProduct} onMouseLeave={scaleProduct} scaling={isScaled} discount={discount?discount:null} available={props.data?props.data.currStock>0?'A':'NA':null}>
+        <RegularDeals onClick={productClickHandler.bind(this,props.data?props.data.id?props.data.id:props.data._id:null)}  scaling={isScaled} discount={discount?discount:null} available={props.data?props.data.currStock>0?'A':'NA':null}>
             {productDiv}
         </RegularDeals>
     )

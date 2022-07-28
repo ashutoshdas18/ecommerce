@@ -45,6 +45,30 @@ let BrandFilter = styled.div`
     }
 
 `
+
+let CategorySpecific = styled.div`
+    .filterLabel{
+        font-size:14px;
+        font-weight:500;
+        font-family:var(--font-secondary);
+        margin-bottom:10px;
+        color : black;
+    }
+    input{
+        outline:none;
+        margin-right : 10px;
+    }
+    &>div{
+        margin-bottom:10px;
+    }
+    &>div>div{
+        font-size:14px;
+        color:#373737;
+        margin-bottom : 5px;
+    }
+    
+`
+
 export default function Filter({ filterData, setSignal, productSignal }) {
     let [brandFilter, setBrandFilter] = React.useState(null);
     React.useEffect(() => {
@@ -65,18 +89,38 @@ export default function Filter({ filterData, setSignal, productSignal }) {
             setBrandFilter(filteredBrand)
         }
     }
-    function filterProducts(filterDataType,filteredData) {
-        console.log(productSignal)
-        if(productSignal[filterDataType]){
-            console.log("Hi")
+    function filterProducts(filterDataType, filteredData) {
+
+        if (productSignal[filterDataType]) {
+            let temp = { ...productSignal }
+            if (productSignal[filterDataType].indexOf(filteredData) >= 0) {
+                let removeFromFilter = [];
+                productSignal[filterDataType].forEach(e => {
+                    if (e !== filteredData) {
+                        removeFromFilter.push(e)
+                    }
+                })
+                if (removeFromFilter.length === 0) {
+                    delete temp[filterDataType]
+                }
+                else {
+                    temp[filterDataType] = removeFromFilter;
+                }
+                setSignal(temp)
+            }
+            else {
+                temp[filterDataType].push(filteredData)
+                setSignal(temp)
+            }
         }
-        else{
-            let x =productSignal;
-            x[filterDataType]=filterData;
+        else {
+            let x = { ...productSignal };
+            x[filterDataType] = [];
+            x[filterDataType].push(filteredData)
             setSignal(x)
-            console.log("Hello")
         }
     }
+
     return (
         <SideFilterWrapper>
             <SideFilterLabel>
@@ -88,12 +132,21 @@ export default function Filter({ filterData, setSignal, productSignal }) {
                     <input type="text" placeholder="Search for brands" onChange={showFilters} className="brandInput" />
                     {brandFilter && <>
                         {brandFilter.map((e, key) => <div key={key} className="brands">
-                            <input type="checkbox" onClick={event => filterProducts('brand',e)} value={e} />
+                            <input type="checkbox" onClick={event => filterProducts('brand', e)} value={e} />
                             <p>{e.toUpperCase()}</p>
                         </div>)
                         }
                     </>}
                 </BrandFilter>
+                <CategorySpecific>
+                    {filterData && <>
+                        {Object.keys(filterData.categorySpecific).map((categoryName, key) => <div key={key} className={categoryName}>
+                            <div className="filterLabel">{categoryName.toUpperCase()}</div>
+                            {filterData.categorySpecific[categoryName].map((e, key) => typeof e !== 'object' ? <div key={key}><input value={e} type='checkbox' onClick={event => filterProducts(categoryName, e)} />{e}</div > : <div key={key} style={{ display: "flex"}} ><input type="checkbox" /><div style={{ display: "flex", gap: "10px" }}>{Object.keys(e).map((objItem, key) => <div key={key}>{e[objItem]}</div>)}</div></div>)}
+                        </div>)}
+                    </>}
+
+                </CategorySpecific>
             </form>
         </SideFilterWrapper>
     )

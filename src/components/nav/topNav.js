@@ -192,7 +192,7 @@ function TopNav(props){
                 <TopNavLeft color={props.darkMode?'white':'#3e445a'}>
                     <ul className="topNavLeftUL">
                         <li><a  href="#!">{navContentObj[0]}</a></li>
-                        <li><a  href="#!">{navContentObj[1]}</a></li>
+                        <li><a  href="/dashboard">{navContentObj[1]}</a></li>
                         <li><a  href="#!">{navContentObj[2]}</a></li>
                         <li><a  href="#!">{navContentObj[3]}</a></li>
                     </ul>

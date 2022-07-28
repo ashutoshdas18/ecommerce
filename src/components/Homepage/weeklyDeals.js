@@ -20,6 +20,9 @@ let WeeklyDealsContainer= styledComponents.div `
             height:340px;
             // border-collapse:collapse;
         }
+        &>div:hover{
+            box-shadow: 0 6px 31px -2px rgba(0,0,0,.1);
+        }
         &>div:first-child{
             border-radius:5px 0 0 0;
             border-right:0;

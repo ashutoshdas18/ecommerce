@@ -27,7 +27,6 @@ let ProductPageHeader = styled.div`
     margin-bottom:20px;
     div{
         height:30px;
-        width:300px;
         background-color:${props=>props.data?'':'#e3e3e3'};
         text-align : left;
         margin-bottom:10px;
